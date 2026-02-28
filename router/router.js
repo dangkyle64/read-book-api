@@ -23,7 +23,7 @@ function createBookDataInstance(data) {
 router.post('/', (request, response) => {
     const data = request.body
     createBookDataInstance(request.body)
-    console.log(`POST request data=${data.chapters_read}`)
+    console.log(`POST request data=${data.book_name}`)
     response.send(homepage.post())
 })
 
