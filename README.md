@@ -1,3 +1,50 @@
+# read-book-API
+
+The API provides records to help me keep track of books I've read in the past and related information for it.
+
+## Getting Started
+
+### Prerequisites
+NodeJS
+
+### Installation
+1. Clone the repo
+```bash
+```
+2. Install dependencies
+```bash
+```
+3. Run the API
+```bash
+```
+
+## Endpoints / Usage
+
+### GET /
+Return all items.
+
+Example Request
+```bash
+curl http://localhost:3000/
+```
+
+Response:
+[
+  {"id": 1, "name": "Item 1"},
+  {"id": 2, "name": "Item 2"}
+]
+
+## Testing
+
+Run the tests with:
+```bash
+```
+
+Example test output:
+
+## Future Work
+
+
 minimum requirements
 
 API that takes 
@@ -128,3 +175,16 @@ In this case i just need to update my understanding to the structure:
 services > repository > database
 
 This allows infrastructure like the database to not depend on domain knowledge. I did not at the time completely understand the "roles" of each section. By keeping these separate, it allows for easier separation of responsibilities and also keeping it easy for test cases to focus on specific domains.
+
+# Broken function getById, fixed
+
+## Problem
+The object that was supposed to be returned was instead undefined. The function works properly when using strings but when using numbers inside of the url, the returned value is undefined. The current path taken is:
+
+Postman -> Controller -> Services -> Repository -> Database
+
+## Background
+The request.params ends up returning any value there as a string, causing problems with finding the value inside of the json database. The method used to find the issue was adding console.logs along the path found above to see what exactly the data was. At the time, seeing the number go down the path had me more confused but using typeof() cleared up the issue quickly.
+
+## Solution
+It is difficult to say its a solution but knowing that I plan on using the UUID function from the crypto library and that is always a string, I need to just stay consistent with it. The old data that caused problems could appear in the API in the future through user input so input validation must be added in between the API business logic and the input coming through the endpoint.
