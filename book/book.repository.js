@@ -52,7 +52,16 @@ export class BookRepository {
         this.db = db;
     }
 
+    get() {
+        return this.db.getAll()
+    }
+
     findById(id) {
-        return this.db.book.findUnique({ where: {id} })
+        return this.db.getById(id)
+    }
+
+    create() {
+        return this.db.create("book5")
     }
 }
+    

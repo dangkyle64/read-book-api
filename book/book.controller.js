@@ -5,10 +5,21 @@ export class BookController {
         this.BookServices = BookServices
         this.router = express.Router();
 
+        this.router.get("/", this.getAllBooks.bind(this))
         this.router.get("/:id", this.getBookById.bind(this))
         this.router.post("/", this.saveBookData.bind(this))
         this.router.put("/:id", this.updateBookData.bind(this))
         this.router.delete("/:id", this.deleteBookById.bind(this))
+    }
+
+    async getAllBooks(request, response) {
+        const books = await this.BookServices.getAllBookProfiles()
+        console.log(books)
+        if (!books) {
+            return response.status(404).json({ message: "Books not found" })
+        }
+
+        return response.status(200).json(books)
     }
 
     async getBookById(request, response) {
