@@ -15,6 +15,18 @@ class databaseInterface {
         throw new Error("Implement the create function");
     }
 
+    async update() {
+        throw new Error("Implement the update function");
+    }
+
+    async patch() {
+        throw new Error("Implement the patch function");
+    }
+
+    async delete() {
+        throw new Error("Implement the delete function");
+    }
+
     async save() {
         throw new Error("Implement the save function");
     }

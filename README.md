@@ -44,6 +44,18 @@ Example test output:
 
 ## Future Work
 
+1. Testing and CI/CD 
+   Add unit testing and integration tests to confirm stability on endpoints
+
+2. Rate limiting either on API / Per Endpoint basis
+   Add checks based on IP (method still need to be researched) to limit certain amount of page loads to keep site stable
+
+3. Implement automated testing (CI)
+   Set up Github Actions.
+
+4. Configure safe deployment workflow (CD)
+
+For deeper look into my design thinking, implementation ideas, or potential improvements, see [project notes](https://dangkyle64.github.io/)
 
 minimum requirements
 

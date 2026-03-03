@@ -63,5 +63,17 @@ export class BookRepository {
     create() {
         return this.db.create("book5")
     }
+
+    update() {
+
+    }
+
+    patch() {
+
+    }
+
+    delete() {
+        
+    }
 }
     

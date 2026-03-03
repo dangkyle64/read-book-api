@@ -70,6 +70,31 @@ class databaseBook extends databaseInterface {
         }
     }
 
+    async update() {
+
+    }
+
+    async patch() {
+
+    }
+
+    async delete(id) {
+        try {
+            let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
+            let parsedData = JSON.parse(rawData)
+
+            const index = parsedData.findIndex(book => book.id === id)
+            if (index !== -1) {
+                this.data.splice(index, 1)
+            }
+
+            await this.save()
+            console.log('Deleted item with id 2');
+        } catch(error) {
+            console.error("Error deleting the book using ID: ", error)
+        }
+    }
+
     async save() {
         try { 
             const jsonData = JSON.stringify(this.data, null, 2);
