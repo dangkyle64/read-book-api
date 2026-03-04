@@ -1,62 +1,89 @@
-# read-book-API
+# Read Book API
 
-The API provides records to help me keep track of books I've read in the past and related information for it.
-
+A RESTful API for managing and tracking books, including metadata such as title, author, and completion status.
 ## Getting Started
 
 ### Prerequisites
-NodeJS
+- Node.js(v18+ recommended)
+- npm
+
+### Tech Stack:
+- Node.js / Express
+- JSON file storage
+- RESTful API design
+
+### Features:
+- Track books read
+- Add, edit, delete book records
+- View book metadata (title, author)
 
 ### Installation
-1. Clone the repo
+**1. Clone the repository:**
 ```bash
+git clone https://github.com/dangkyle64/read-book-api.git
 ```
-2. Install dependencies
+**2. Navigate into the project folder:**
 ```bash
+cd read-book-api
 ```
-3. Run the API
+**3. Install dependencies:**
 ```bash
+npm install
 ```
+**4. Start the API:**
+```bash
+node main.js
+```
+The API will start on `http://localhost:3000` by default.
 
 ## Endpoints / Usage
 
 ### GET /
-Return all items.
+**Description:**
+Return all book records from the API.
 
-Example Request
+**Request Example:**
 ```bash
 curl http://localhost:3000/
 ```
 
-Response:
+**Response Example:**
+```json
 [
   {"id": 1, "name": "Item 1"},
   {"id": 2, "name": "Item 2"}
 ]
+```
 
 ## Testing
+**Note:** Testing has not been implemented yet. This section will be updated when unit tests are added.
 
 Run the tests with:
 ```bash
+# Example command when tests are added
+npm test
 ```
 
 Example test output:
 
 ## Future Work
 
-1. Testing
-   Add unit testing and integration tests to confirm stability on endpoints
+**1. Testing**
+- Add unit testing and integration tests to confirm endpoint stability.
 
-2. Rate limiting either on API / Per Endpoint basis
-   Add checks based on IP (method still need to be researched) to limit certain amount of page loads to keep site stable
+**2. Rate limiting either on API / Per Endpoint basis**
+- Implement basic per-IP limits to prevent excessive requests.
+- Refine limits per endpoint as the API scales.
 
-3. Implement automated testing (CI)
-   Set up Github Actions.
+**3. Implement automated testing (CI)**
+- Set up continous integration using Github Actions.
 
-4. Configure safe deployment workflow (CD)
+**4. Configure safe deployment workflow (CD)**
+- Configure automated deployment pipeline for secure and reliable releases.
 
-For deeper look into my design thinking, implementation ideas, or potential improvements, see [project notes](https://dangkyle64.github.io/)
-    
+--- 
+For deeper look into my design thinking, implementation ideas, or potential improvements, see [project blog](https://dangkyle64.github.io/)
+  
 Technical Blog Note
 
 #  Forgetting to use express.json Middleware and the problems faced
