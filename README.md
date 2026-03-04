@@ -6,7 +6,7 @@ A RESTful API for managing and tracking books, including metadata such as title,
 ## Getting Started
 
 ### Prerequisites
-- Node.js(v18+ recommended)
+- Node.js (v18+ recommended)
 - npm
 
 ### Tech Stack:
@@ -58,11 +58,10 @@ curl http://localhost:3000/
 ```
 
 ## Testing
-**Note:** Testing has not been implemented yet. This section will be updated when unit tests are added.
+**Note:** Basic integration test for API get endpoint have been added. Unit tests are service function related and are currently mocked until DB integration.
 
 Run the tests with:
 ```bash
-# Example command when tests are added
 npm test
 ```
 
@@ -70,8 +69,11 @@ Example test output:
 
 ## Future Work
 
-**1. Testing**
-- Add unit testing and integration tests to confirm endpoint stability.
+**1. Testing Enhancements**
+- Add more comprehensive integration tests for all endpoints
+- Add edge case and error handling tests (400, 404, 500 scenarios)
+- Increase service-layer unit test coverage as business logic grows
+- Introduce test coverage reporting
 
 **2. Rate limiting**
 - Implement basic per-IP limits to prevent excessive requests.
