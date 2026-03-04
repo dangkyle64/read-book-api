@@ -64,16 +64,16 @@ export class BookRepository {
         return this.db.create("book5")
     }
 
-    update() {
-
+    update(id, new_book_data) {
+        return this.db.update(id, new_book_data)
     }
 
-    patch() {
-
+    patch(id, new_book_data) {
+        return this.db.patch(id, new_book_data)
     }
 
-    delete() {
-        
+    delete(id) {
+        return this.db.delete(id)
     }
 }
     

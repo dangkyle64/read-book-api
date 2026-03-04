@@ -16,8 +16,12 @@ export class BookService {
         await this.BookRepository.create(book_data)
     }
 
-    async updateBookProfile(id, book_data) {
-        await this.BookRepository.update(id, book_data)
+    async updateBookProfile(id, new_book_data) {
+        await this.BookRepository.update(id, new_book_data)
+    }
+
+    async patchBookProfile(id, new_book_data) {
+        await this.BookRepository.patch(id, new_book_data)
     }
 
     async deleteBookProfile(id) {

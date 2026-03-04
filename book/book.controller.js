@@ -9,6 +9,7 @@ export class BookController {
         this.router.get("/:id", this.getBookById.bind(this))
         this.router.post("/", this.saveBookData.bind(this))
         this.router.put("/:id", this.updateBookData.bind(this))
+        this.router.patch("/:id", this.patchBookData.bind(this))
         this.router.delete("/:id", this.deleteBookById.bind(this))
     }
 
@@ -43,16 +44,24 @@ export class BookController {
 
     async updateBookData(request, response) {
         const { id } = request.params;
-        const book_data = request.body;
-        await this.BookServices.updateBookProfile(id, book_data)
+        const new_book_data = request.body;
+        await this.BookServices.updateBookProfile(id, new_book_data)
 
         return response.status(200).json({ message: "Book updated"})
+    }
+
+    async patchBookData(request, response) {
+        const { id } = request.params;
+        const new_book_data = request.body;
+        await this.BookServices.patchBookProfile(id, new_book_data)
+
+        return response.status(200).json({ message: "Book patched"})
     }
 
     async deleteBookById(request, response) {
         const { id } = request.params;
         const message_result = await this.BookServices.deleteBookProfile(id)
 
-        return response.status(200).json({ message: message_result})
+        return response.status(200).json({ message: `Deleted ${message_result}`})
     }
 }

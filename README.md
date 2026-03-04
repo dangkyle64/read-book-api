@@ -44,7 +44,7 @@ Example test output:
 
 ## Future Work
 
-1. Testing and CI/CD 
+1. Testing
    Add unit testing and integration tests to confirm stability on endpoints
 
 2. Rate limiting either on API / Per Endpoint basis
@@ -56,22 +56,6 @@ Example test output:
 4. Configure safe deployment workflow (CD)
 
 For deeper look into my design thinking, implementation ideas, or potential improvements, see [project notes](https://dangkyle64.github.io/)
-
-minimum requirements
-
-API that takes 
-    book name
-    chapters read
-    favorite chapters
-    thoughts about book
-
-
-API that returns
-    book data
-
-application requirements
-    database to have persistent data
-    test cases to confirm important functions are stable in edge cases
     
 Technical Blog Note
 

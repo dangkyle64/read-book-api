@@ -70,12 +70,48 @@ class databaseBook extends databaseInterface {
         }
     }
 
-    async update() {
+    async update(id, new_book_data) {
+        try {
+            let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
+            let parsedData = JSON.parse(rawData)
+            
+            console.log(parsedData)
+            const index = parsedData.book.findIndex(book => book.id === id)
+            console.log("index: ", index)
+            console.log(parsedData.book)
+            parsedData.book[index] = new_book_data
 
-    }
+            console.log("This: ", parsedData)
+            this.data = parsedData
 
-    async patch() {
+            await this.save()
 
+        } catch(error) {
+            console.error("Error updating the book using ID: ", error)
+        }
+    } 
+
+    async patch(id, new_book_data) {
+        try {
+            let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
+            let parsedData = JSON.parse(rawData)
+
+            const foundBook = parsedData.book.find(book => book.id === id)
+            if (!foundBook) {
+                console.error("Error did not find book under current id:")
+                return 
+            }
+            
+            Object.assign(foundBook, new_book_data)
+
+            console.log("This: ", parsedData)
+            this.data = parsedData
+
+            await this.save()
+
+        } catch(error) {
+            console.error("Error updating the book using ID: ", error)
+        }
     }
 
     async delete(id) {
@@ -83,12 +119,15 @@ class databaseBook extends databaseInterface {
             let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
             let parsedData = JSON.parse(rawData)
 
-            const index = parsedData.findIndex(book => book.id === id)
+            const index = parsedData.book.findIndex(book => book.id === id)
             if (index !== -1) {
-                this.data.splice(index, 1)
+                console.log(`this.data=${this.data}`)
+                parsedData.book.splice(index, 1)
             }
-
+            
+            this.data = parsedData
             await this.save()
+
             console.log('Deleted item with id 2');
         } catch(error) {
             console.error("Error deleting the book using ID: ", error)
