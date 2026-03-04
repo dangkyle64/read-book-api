@@ -1,3 +1,5 @@
+![License](https://img.shields.io/badge/License-MIT-green)
+
 # Read Book API
 
 A RESTful API for managing and tracking books, including metadata such as title, author, and completion status.
@@ -71,7 +73,7 @@ Example test output:
 **1. Testing**
 - Add unit testing and integration tests to confirm endpoint stability.
 
-**2. Rate limiting either on API / Per Endpoint basis**
+**2. Rate limiting**
 - Implement basic per-IP limits to prevent excessive requests.
 - Refine limits per endpoint as the API scales.
 
@@ -82,8 +84,20 @@ Example test output:
 - Configure automated deployment pipeline for secure and reliable releases.
 
 --- 
-For deeper look into my design thinking, implementation ideas, or potential improvements, see [project blog](https://dangkyle64.github.io/)
-  
+For deeper look into my design thinking, implementation ideas, or potential improvements, see [project blog](https://dangkyle64.github.io/).
+
+## License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome. Please open a pull request or submit an issue for suggestions.
+
+## Author / Contact
+**Kyle Dang** – [GitHub](https://github.com/dangkyle64) | [Portfolio / Blog](https://dangkyle64.github.io/) | `dangkyle64@gmail.com`
+
+---
 Technical Blog Note
 
 #  Forgetting to use express.json Middleware and the problems faced
