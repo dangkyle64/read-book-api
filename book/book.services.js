@@ -8,12 +8,11 @@ export class BookService {
     }
 
     async getBookProfile(id) {
-        const book = await this.BookRepository.findById(id);
-        return book;
+        return await this.BookRepository.findById(id);
     }
 
-    async saveBookProfile(book_data) {
-        await this.BookRepository.create(book_data)
+    async createBookProfile(book_data) {
+        return await this.BookRepository.create(book_data)
     }
 
     async updateBookProfile(id, new_book_data) {

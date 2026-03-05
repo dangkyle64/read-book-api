@@ -5,7 +5,7 @@ import app from '../../main.js'
 describe('GET /books', () => {
 
     it('returns all books', async () => {
-        const res = await request(app).get('/')
+        const res = await request(app).get('/books')
         // checking for expected values in response 
         expect(res.statusCode).toBe(200)
 

@@ -60,8 +60,8 @@ export class BookRepository {
         return this.db.getById(id)
     }
 
-    create() {
-        return this.db.create("book5")
+    create(book_data) {
+        return this.db.create(book_data)
     }
 
     update(id, new_book_data) {

@@ -24,7 +24,6 @@ class databaseBook extends databaseInterface {
         try {
             const rawData = fs.readFileSync(this.DATABASE_PATH);
             const parsedData = JSON.parse(rawData)
-            console.log(parsedData)
             return parsedData
         } catch(error) {
             console.error("No data was found: ", error)
@@ -32,11 +31,11 @@ class databaseBook extends databaseInterface {
         }
     }
 
-    async create(book_name) {
+    async create(book_data) {
         try {
             const object_to_save = {
                 "id": randomUUID(),
-                "book_name": book_name
+                "book_name": book_data.book_name
             }
 
             const rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
@@ -45,8 +44,10 @@ class databaseBook extends databaseInterface {
             parsedData.book.push(object_to_save)
             
             this.data = parsedData;
-
+            
             await this.save()
+            return object_to_save
+            
         } catch(error) {
             console.error("Error creating object to the JSON database: ", error)
             return
@@ -57,12 +58,7 @@ class databaseBook extends databaseInterface {
         try {
             const rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
             const parsedData = JSON.parse(rawData)
-            
-            console.log(parsedData)
-            console.log(typeof(id))
             const foundBook = parsedData.book.find(book => book.id === id)
-            
-            console.log(`found ${foundBook}`)
             return foundBook
         } catch(error) {
             console.error("Error finding the book using ID: ", error)
@@ -75,13 +71,9 @@ class databaseBook extends databaseInterface {
             let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
             let parsedData = JSON.parse(rawData)
             
-            console.log(parsedData)
             const index = parsedData.book.findIndex(book => book.id === id)
-            console.log("index: ", index)
-            console.log(parsedData.book)
             parsedData.book[index] = new_book_data
 
-            console.log("This: ", parsedData)
             this.data = parsedData
 
             await this.save()
@@ -104,7 +96,6 @@ class databaseBook extends databaseInterface {
             
             Object.assign(foundBook, new_book_data)
 
-            console.log("This: ", parsedData)
             this.data = parsedData
 
             await this.save()
@@ -128,7 +119,6 @@ class databaseBook extends databaseInterface {
             this.data = parsedData
             await this.save()
 
-            console.log('Deleted item with id 2');
         } catch(error) {
             console.error("Error deleting the book using ID: ", error)
         }

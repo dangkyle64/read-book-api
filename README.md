@@ -2,7 +2,9 @@
 
 # Read Book API
 
-A RESTful API for managing and tracking books, including metadata such as title, author, and completion status.
+A RESTful API for managing and tracking books, including metadata such as title, author, and completion status. 
+
+The project demonstrates layered API architecture with controllers, services, and a repository pattern backed by a lightweight JSON datastore.
 ## Getting Started
 
 ### Prerequisites
@@ -40,21 +42,44 @@ The API will start on `http://localhost:3000` by default.
 
 ## Endpoints / Usage
 
-### GET /
+### GET /books
 **Description:**
 Return all book records from the API.
 
 **Request Example:**
 ```bash
-curl http://localhost:3000/
+curl http://localhost:3000/books
 ```
 
 **Response Example:**
 ```json
-[
-  {"id": 1, "name": "Item 1"},
-  {"id": 2, "name": "Item 2"}
-]
+{
+  "books": [
+    { "id": "1b00401d-2317-483f-b8de-b5230c107c88", "book_name": "book1" },
+    { "id": "4eb99821-78eb-483b-90d0-8d4fa7197945", "book_name": "book2" }
+  ]
+}
+```
+
+### POST /books
+**Description**
+Creates a new book record in API
+
+**Request Example:**
+```bash
+curl -X POST http://localhost:3000/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "book_name": "The Great Gatsby"
+  }'
+```
+
+**Response Example:**
+```json
+{
+    "id":"bfdaf2cc-7c4a-4040-a49a-1d8f9edfef44",
+    "book_name":"The Great Gatsby"
+}
 ```
 
 ## Testing
@@ -65,15 +90,36 @@ Run the tests with:
 npm test
 ```
 
-Example test output:
+## Architecture Overview
+The project follows the layered structure:
+
+Controller/Routes -> Services -> Repository -> JSON Storage
+
+This separation helps isolate responsibilities between request handling, business logic, and data persistence.
+
+## Design Decisions
+### Choice of JSON Database
+- JSON-based storage was chosen to keep project lightweight and simple to implement at the beginning.
+- Removes the need for external database configuration while allowing for testing along CRUD operations.
+- Keeps focus on API design and application logic.
+
+### Why Patch and Put
+- PATCH used for partial updates to avoid overwriting fields not being modified.
+- PUT replaces the entire resource and may be useful when a full update is intended.
+- Supporting both methods provides flexibility depending on how the API evolves.
+
+### Separate Data Layer
+- Data access logic is separated from route functions to improve maintainability.
+- Structure makes it easier to completely replace the JSON database for a different database (eg. PostgreSQL).
+- Keeps API routes focused on request/response management rather than data management.
 
 ## Future Work
 
 **1. Testing Enhancements**
-- Add more comprehensive integration tests for all endpoints
-- Add edge case and error handling tests (400, 404, 500 scenarios)
-- Increase service-layer unit test coverage as business logic grows
-- Introduce test coverage reporting
+- Add more comprehensive integration tests for all endpoints.
+- Add edge case and error handling tests (400, 404, 500 scenarios).
+- Increase service-layer unit test coverage as business logic grows.
+- Introduce test coverage reporting.
 
 **2. Rate limiting**
 - Implement basic per-IP limits to prevent excessive requests.
@@ -120,7 +166,7 @@ data I wanted to see.
 The solution is more simple in this case, just adding app.use(express.json()) into my middleware section
 allowed the code to work properly again and allowed me to see the data I sent through the POST request.
 
-Example finished code here
+Example finished code here:
 
 ```bash
 
