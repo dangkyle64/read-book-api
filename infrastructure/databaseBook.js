@@ -111,14 +111,16 @@ class databaseBook extends databaseInterface {
             let parsedData = JSON.parse(rawData)
 
             const index = parsedData.book.findIndex(book => book.id === id)
-            if (index !== -1) {
-                console.log(`this.data=${this.data}`)
-                parsedData.book.splice(index, 1)
+            if (index === -1) {
+                return {error: "Book not found.", id: id}
             }
-            
+
+            parsedData.book.splice(index, 1)
+ 
             this.data = parsedData
             await this.save()
-
+            return {id: id}
+            
         } catch(error) {
             console.error("Error deleting the book using ID: ", error)
         }

@@ -82,6 +82,23 @@ curl -X POST http://localhost:3000/books \
 }
 ```
 
+### DELETE /books/:id
+**Description**
+Deletes a book record with the specified id
+
+**Request Example:**
+```bash
+curl -X DELETE http://localhost:3000/books/1b00401d-2317-483f-b8de-b5230c107c88
+```
+
+**Response Example:**
+```json
+{
+    "message": "Book profile deleted successfully.",
+    "id": "4eb99821-78eb-483b-90d0-8d4fa7197945"
+}
+```
+
 ## Testing
 **Note:** Basic integration test for API get endpoint have been added. Unit tests are service function related and are currently mocked until DB integration.
 

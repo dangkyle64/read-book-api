@@ -60,8 +60,12 @@ export class BookController {
 
     async deleteBookById(request, response) {
         const { id } = request.params;
-        const message_result = await this.BookServices.deleteBookProfile(id)
+        const result = await this.BookServices.deleteBookProfile(id)
 
-        return response.status(200).json({ message: `Deleted ${message_result}`})
+        if (result.error) {
+            return response.status(404).json({ error: result.error, id: result.id })
+        }
+
+        return response.status(200).json({ message: `Book profile deleted successfully.`, id: result.id})
     }
 }

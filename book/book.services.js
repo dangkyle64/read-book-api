@@ -24,6 +24,6 @@ export class BookService {
     }
 
     async deleteBookProfile(id) {
-        await this.BookRepository.delete(id)
+        return await this.BookRepository.delete(id)
     }
 }
