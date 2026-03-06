@@ -31,22 +31,23 @@ class databaseBook extends databaseInterface {
         }
     }
 
-    async create(book_data) {
+    // clean property name here
+    async create(bookData) {
         try {
-            const object_to_save = {
+            const tempObject = {
                 "id": randomUUID(),
-                "book_name": book_data.book_name
+                "bookName": bookData.bookName
             }
 
             const rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
             const parsedData = JSON.parse(rawData)
 
-            parsedData.book.push(object_to_save)
+            parsedData.book.push(tempObject)
             
             this.data = parsedData;
             
             await this.save()
-            return object_to_save
+            return tempObject
             
         } catch(error) {
             console.error("Error creating object to the JSON database: ", error)
@@ -66,13 +67,13 @@ class databaseBook extends databaseInterface {
         }
     }
 
-    async update(id, new_book_data) {
+    async update(id, newBookData) {
         try {
             let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
             let parsedData = JSON.parse(rawData)
             
             const index = parsedData.book.findIndex(book => book.id === id)
-            parsedData.book[index] = new_book_data
+            parsedData.book[index] = newBookData
 
             this.data = parsedData
 
@@ -83,7 +84,7 @@ class databaseBook extends databaseInterface {
         }
     } 
 
-    async patch(id, new_book_data) {
+    async patch(id, newBookData) {
         try {
             let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
             let parsedData = JSON.parse(rawData)
@@ -94,7 +95,7 @@ class databaseBook extends databaseInterface {
                 return 
             }
             
-            Object.assign(foundBook, new_book_data)
+            Object.assign(foundBook, newBookData)
 
             this.data = parsedData
 

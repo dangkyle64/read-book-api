@@ -35,25 +35,25 @@ export class BookController {
 
     async createBookData(request, response) {
 
-        const book_data = request.body;
+        const bookData = request.body;
 
-        const createdBook = await this.BookServices.createBookProfile(book_data)
+        const createdBook = await this.BookServices.createBookProfile(bookData)
 
         return response.status(200).json(createdBook)
     }
 
     async updateBookData(request, response) {
         const { id } = request.params;
-        const new_book_data = request.body;
-        await this.BookServices.updateBookProfile(id, new_book_data)
+        const newBookData = request.body;
+        await this.BookServices.updateBookProfile(id, newBookData)
 
         return response.status(200).json({ message: "Book updated"})
     }
 
     async patchBookData(request, response) {
         const { id } = request.params;
-        const new_book_data = request.body;
-        await this.BookServices.patchBookProfile(id, new_book_data)
+        const newBookData = request.body;
+        await this.BookServices.patchBookProfile(id, newBookData)
 
         return response.status(200).json({ message: "Book patched"})
     }

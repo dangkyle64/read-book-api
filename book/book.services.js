@@ -11,16 +11,16 @@ export class BookService {
         return await this.BookRepository.findById(id);
     }
 
-    async createBookProfile(book_data) {
-        return await this.BookRepository.create(book_data)
+    async createBookProfile(bookData) {
+        return await this.BookRepository.create(bookData)
     }
 
-    async updateBookProfile(id, new_book_data) {
-        await this.BookRepository.update(id, new_book_data)
+    async updateBookProfile(id, newBookData) {
+        await this.BookRepository.update(id, newBookData)
     }
 
-    async patchBookProfile(id, new_book_data) {
-        await this.BookRepository.patch(id, new_book_data)
+    async patchBookProfile(id, newBookData) {
+        await this.BookRepository.patch(id, newBookData)
     }
 
     async deleteBookProfile(id) {
