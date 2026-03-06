@@ -4,22 +4,20 @@ import { BookService } from './book/book.services.js';
 import { BookController } from './book/book.controller.js';
 import databaseBook from '../infrastructure/databaseBook.js';
 
-const app = express()
+export async function createApp({ dbPath } = {}) {
+    const app = express();
 
-app.use(express.static('public'))
-app.use(express.json())
+    app.use(express.static('public'));
+    app.use(express.json());
 
-const database = new databaseBook()
-await database.initialize()
+    const database = new databaseBook({ dbPath });
+    await database.initialize();
 
-const bookRepository2 = new BookRepository(database)
-const bookServices = new BookService(bookRepository2);
-const bookController = new BookController(bookServices)
+    const bookRepository = new BookRepository(database);
+    const bookServices = new BookService(bookRepository);
+    const bookController = new BookController(bookServices);
 
-app.use('/books', bookController.router)
+    app.use('/books', bookController.router);
 
-app.listen(3000, () => {
-    console.log('Server running on http://localhost:3000')
-})
-
-export default app;
+    return app;
+}

@@ -3,10 +3,10 @@ import { randomUUID } from 'crypto';
 import databaseInterface from "./databaseInterface.js";
 
 class databaseBook extends databaseInterface {
-    constructor() {
+    constructor({ dbPath } = {}) {
         super();
         this.data = {}
-        this.DATABASE_PATH = "./infrastructure/jsonDatabase.json";
+        this.DATABASE_PATH = dbPath || "./infrastructure/jsonDatabase.json";
     }
 
     async initialize() {
@@ -34,7 +34,7 @@ class databaseBook extends databaseInterface {
         }
 
         if (!parsedData.book || parsedData.book.length === 0) {
-            throw new Error("No books inside database."); // manually throw
+            throw new Error("No books inside database.");
         }
 
         return parsedData;
