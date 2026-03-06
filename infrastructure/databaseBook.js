@@ -21,117 +21,162 @@ class databaseBook extends databaseInterface {
     }
 
     async getAll() {
+
+        let parsedData;
+
         try {
             const rawData = fs.readFileSync(this.DATABASE_PATH);
-            const parsedData = JSON.parse(rawData)
-            return parsedData
-        } catch(error) {
-            console.error("No data was found: ", error)
-            return
-        }
-    }
-
-    async create(bookData) {
-        try {
-            const tempObject = {
-                "id": randomUUID(),
-                "bookName": bookData.bookName
-            }
-
-            const rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
-            const parsedData = JSON.parse(rawData)
-
-            parsedData.book.push(tempObject)
-            
-            this.data = parsedData;
-            
-            await this.save()
-            return tempObject
+            parsedData = JSON.parse(rawData)
             
         } catch(error) {
-            console.error("Error creating object to the JSON database: ", error)
-            return
+            console.error("Error reading or parsing database: ", error);
+            throw new Error("Failed to read database.");
         }
+
+        if (!parsedData.book || parsedData.book.length === 0) {
+            throw new Error("No books inside database."); // manually throw
+        }
+
+        return parsedData;
     }
 
     async getById(id) {
+
+        let parsedData;
+
         try {
-            const rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
-            const parsedData = JSON.parse(rawData)
-            const foundBook = parsedData.book.find(book => book.id === id)
-            return foundBook
+            const rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8');
+            parsedData = JSON.parse(rawData);
+        
         } catch(error) {
-            console.error("Error finding the book using ID: ", error)
-            return
+            console.error(`Error reading database: `, error);
+            throw new Error("Failed to read the database.");
         }
+
+        const foundBook = parsedData.book.find(book => book.id === id);
+        
+        if (!foundBook) {
+            throw new Error("Book profile does not exist.");
+        }
+
+        return foundBook;
+    }
+
+    async create(bookData) {
+
+        if (!bookData.bookName) {
+            throw new Error("bookName is required");
+        }
+
+        const tempObject = {
+            "id": randomUUID(),
+            "bookName": bookData.bookName
+        };
+
+        let parsedData;
+
+        try {
+            const rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8');
+            parsedData = JSON.parse(rawData);
+        } catch(error) {
+            console.error(`Error reading database: `, error);
+            throw new Error("Failed to read the database.");
+        }
+
+        parsedData.book.push(tempObject);
+        
+        this.data = parsedData;
+        await this.save();
+        return tempObject;
     }
 
     async update(id, newBookData) {
+
+        let parsedData;
+
         try {
-            let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
-            let parsedData = JSON.parse(rawData)
-            
-            const index = parsedData.book.findIndex(book => book.id === id)
-            parsedData.book[index] = newBookData
-
-            this.data = parsedData
-
-            await this.save()
-
+            let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8');
+            parsedData = JSON.parse(rawData);
         } catch(error) {
-            console.error("Error updating the book using ID: ", error)
+            console.error("Error reading or parsing database: ", error);
+            throw new Error("Failed to read database.");
         }
+
+        const index = parsedData.book.findIndex(book => book.id === id);
+
+        if (index === -1)  {
+            throw new Error("Book profile does not exist.");
+        }
+
+        parsedData.book[index] = {
+            ...newBookData,
+            id: parsedData.book[index].id
+        };
+
+        this.data = parsedData;
+            
+        await this.save();
+        return parsedData.book[index];
     } 
 
     async patch(id, newBookData) {
+
+        let parsedData;
+
         try {
-            let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
-            let parsedData = JSON.parse(rawData)
-
-            const foundBook = parsedData.book.find(book => book.id === id)
-            if (!foundBook) {
-                console.error("Error did not find book under current id:")
-                return 
-            }
-            
-            Object.assign(foundBook, newBookData)
-
-            this.data = parsedData
-
-            await this.save()
-
+            let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8');
+            parsedData = JSON.parse(rawData);
+        
         } catch(error) {
-            console.error("Error updating the book using ID: ", error)
+            console.error("Error reading or parsing database: ", error);
+            throw new Error("Failed to read database.");
         }
+        
+        const foundBook = parsedData.book.find(book => book.id === id);
+        if (!foundBook) {
+            throw new Error("Book profile does not exist.");
+        }
+            
+        Object.assign(foundBook, newBookData);
+
+        this.data = parsedData;
+
+        await this.save();
+
+        return foundBook;
     }
 
     async delete(id) {
+
+        let parsedData;
+
         try {
             let rawData = fs.readFileSync(this.DATABASE_PATH, 'utf-8')
-            let parsedData = JSON.parse(rawData)
-
-            const index = parsedData.book.findIndex(book => book.id === id)
-            if (index === -1) {
-                return {error: "Book not found.", id: id}
-            }
-
-            parsedData.book.splice(index, 1)
- 
-            this.data = parsedData
-            await this.save()
-            return {id: id}
-            
+            parsedData = JSON.parse(rawData)
         } catch(error) {
-            console.error("Error deleting the book using ID: ", error)
+            console.error("Error reading or parsing database: ", error);
+            throw new Error("Failed to read database.");
         }
+            
+        const index = parsedData.book.findIndex(book => book.id === id)
+        if (index === -1) {
+            throw new Error("Book profile does not exist.")
+        }
+
+        parsedData.book.splice(index, 1)
+ 
+        this.data = parsedData
+        await this.save()
+        return {id: id}
     }
 
     async save() {
         try { 
             const jsonData = JSON.stringify(this.data, null, 2);
-            fs.writeFileSync(this.DATABASE_PATH, jsonData)
+            fs.writeFileSync(this.DATABASE_PATH, jsonData);
         } catch(error) {
-            console.error("Error saving data to JSON database: ", error)
+            console.error("Error saving data to JSON database: ", error);
+            throw new Error("Error saving data to JSON database.");
         }
     }
 }

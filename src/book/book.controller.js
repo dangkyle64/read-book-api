@@ -14,48 +14,79 @@ export class BookController {
     }
 
     async getAllBooks(request, response) {
-        const books = await this.BookServices.getAllBookProfiles()
-        if (!books) {
-            return response.status(404).json({ message: "Books not found" })
-        }
-
-        return response.status(200).json(books)
+        try {
+            const books = await this.BookServices.getAllBookProfiles();
+            return response.status(200).json(books);
+        } catch(error) {
+            if (error.message === "No books inside database.") {
+                return response.status(404).json({ error: error.message });
+            } else {
+                return response.status(500).json({ error: error.message });
+            }
+        };
     }
 
     async getBookById(request, response) {
-
         const { id } = request.params;
-        const book = await this.BookServices.getBookProfile(id)
 
-        if (!book)
-            return response.status(404).json({  message: "Book not found" })
-
-        return response.status(200).json(book);
+        try {
+            const book = await this.BookServices.getBookProfile(id);
+            return response.status(200).json(book);
+        } catch(error) {
+            if (error.message === "Book profile does not exist.") {
+                return response.status(404).json({ error: error.message });
+            } else {
+                return response.status(500).json({ error: error.message });
+            }
+        }
     }
 
     async createBookData(request, response) {
 
         const bookData = request.body;
 
-        const createdBook = await this.BookServices.createBookProfile(bookData)
-
-        return response.status(200).json(createdBook)
+        try {
+            const createdBook = await this.BookServices.createBookProfile(bookData);
+            return response.status(201).json(createdBook)
+        } catch(error) {
+            if (error.message === "Error creating book profile.") {
+                return response.status(500).json({ error: error.message });
+            } else {
+                return response.status(500).json({ error: error.message });
+            }
+        }
     }
 
     async updateBookData(request, response) {
         const { id } = request.params;
         const newBookData = request.body;
-        await this.BookServices.updateBookProfile(id, newBookData)
 
-        return response.status(200).json({ message: "Book updated"})
+        try {
+            const updatedBook = await this.BookServices.updateBookProfile(id, newBookData);
+            return response.status(200).json(updatedBook)
+        } catch(error) {
+            if (error.message === "Book profile does not exist.") {
+                return response.status(404).json({ error: error.message });
+            } else {
+                return response.status(500).json({ error: error.message });
+            }
+        }
     }
 
     async patchBookData(request, response) {
         const { id } = request.params;
         const newBookData = request.body;
-        await this.BookServices.patchBookProfile(id, newBookData)
 
-        return response.status(200).json({ message: "Book patched"})
+        try {
+            const patchedBook = await this.BookServices.patchBookProfile(id, newBookData)
+            return response.status(200).json(patchedBook)
+        } catch(error) {
+            if (error.message === "Book profile does not exist.") {
+                return response.status(404).json({ error: error.message });
+            } else {
+                return response.status(500).json({ error: error.message });
+            }
+        }
     }
 
     async deleteBookById(request, response) {

@@ -65,8 +65,8 @@ curl http://localhost:3000/books
 ```json
 {
   "books": [
-    { "id": "1b00401d-2317-483f-b8de-b5230c107c88", "book_name": "book1" },
-    { "id": "4eb99821-78eb-483b-90d0-8d4fa7197945", "book_name": "book2" }
+    { "id": "1b00401d-2317-483f-b8de-b5230c107c88", "bookName": "book1" },
+    { "id": "4eb99821-78eb-483b-90d0-8d4fa7197945", "bookName": "book2" }
   ]
 }
 ```
@@ -80,7 +80,7 @@ Creates a new book record in API
 curl -X POST http://localhost:3000/books \
   -H "Content-Type: application/json" \
   -d '{
-    "book_name": "The Great Gatsby"
+    "bookName": "The Great Gatsby"
   }'
 ```
 
@@ -88,7 +88,28 @@ curl -X POST http://localhost:3000/books \
 ```json
 {
     "id":"bfdaf2cc-7c4a-4040-a49a-1d8f9edfef44",
-    "book_name":"The Great Gatsby"
+    "bookName":"The Great Gatsby"
+}
+```
+
+### PUT /books/:id
+**Description**
+Replace an existing book record with new data. The book’s id is immutable and will not change.
+
+**Request Example:**
+```bash
+curl -X PUT http://localhost:3000/books/5b6d5cc3-c6ae-4495-9dd8-1ec60ec1a0ec \
+-H "Content-Type: application/json" \
+-d '{
+  "bookName": "bookNameUpdated"
+}'
+```
+
+**Response Example:**
+```json
+{
+  "bookName": "bookNameUpdated",
+  "id": "5b6d5cc3-c6ae-4495-9dd8-1ec60ec1a0ec"
 }
 ```
 
@@ -140,6 +161,11 @@ This separation helps isolate responsibilities between request handling, busines
 - Structure makes it easier to completely replace the JSON database for a different database (eg. PostgreSQL).
 - Keeps API routes focused on request/response management rather than data management.
 
+### Handling Errors in the API
+- At early stages, errors are handled directly in the controller for simplicity.
+- Status codes and messages are based on the error thrown from services/repositories.
+- This approach keeps things simple now, while making it easy to refactor into centralized middleware later.
+
 ## Future Work
 
 **1. Testing Enhancements**
@@ -157,6 +183,12 @@ This separation helps isolate responsibilities between request handling, busines
 
 **4. Configure safe deployment workflow (CD)**
 - Configure automated deployment pipeline for secure and reliable releases.
+
+**5. Centralized Error-Handling Middleware**
+- Move to centralized error-handling middleware to manage HTTP status codes and messages consistently.
+
+**6. User Interaction**
+- Add a frontend interface to provide a user-friendly way to interact with the API (currently tested via Postman/curl).
 
 --- 
 For deeper look into my design thinking, implementation ideas, or potential improvements, see [project blog](https://dangkyle64.github.io/).
