@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { BookService } from "../../book/book.services.js";
+import { BookService } from "../../src/book/book.services.js";
 
 describe('book.services', () => {
     it('getAllBookProfiles returns books from repository (dummy test until DB implementation)', async () => {

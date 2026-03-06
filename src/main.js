@@ -2,7 +2,7 @@ import express from 'express';
 import { BookRepository } from './book/book.repository.js';
 import { BookService } from './book/book.services.js';
 import { BookController } from './book/book.controller.js';
-import databaseBook from './infrastructure/databaseBook.js';
+import databaseBook from '../infrastructure/databaseBook.js';
 
 const app = express()
 

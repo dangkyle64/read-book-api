@@ -31,7 +31,6 @@ class databaseBook extends databaseInterface {
         }
     }
 
-    // clean property name here
     async create(bookData) {
         try {
             const tempObject = {

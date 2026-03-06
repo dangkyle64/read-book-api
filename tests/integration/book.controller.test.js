@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import request from 'supertest'
-import app from '../../main.js' 
+import app from '../../src/main.js' 
 
 describe('GET /books', () => {
 

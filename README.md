@@ -40,6 +40,16 @@ node main.js
 ```
 The API will start on `http://localhost:3000` by default.
 
+## Project Structure
+
+- `src/` – all application source code
+  - `books/` – feature folder for the Book resource (controllers, services, routes, models)
+  - `main.js` – app setup and server entry point
+
+- `tests/` – automated tests
+- `infrastructure/` – database configuration and setup
+- `.gitignore`, `LICENSE`, `package.json`, `README.md` – project metadata and configuration
+
 ## Endpoints / Usage
 
 ### GET /books
