@@ -36,7 +36,7 @@ npm install
 ```
 **4. Start the API:**
 ```bash
-node main.js
+node src/server.js
 ```
 The API will start on `http://localhost:3000` by default.
 
@@ -44,7 +44,8 @@ The API will start on `http://localhost:3000` by default.
 
 - `src/` – all application source code
   - `books/` – feature folder for the Book resource (controllers, services, routes, models)
-  - `main.js` – app setup and server entry point
+  - `main.js` – app setup
+  - `server.js` - server entry point
 
 - `tests/` – automated tests
 - `infrastructure/` – database configuration and setup
