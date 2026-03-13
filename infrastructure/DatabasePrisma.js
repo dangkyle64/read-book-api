@@ -2,47 +2,55 @@ import "dotenv/config";
 import { randomUUID } from "crypto";
 import { PrismaClient } from '@prisma/client';
 
-class DatabasePrisma {
+import databaseInterface from "./databaseInterface.js";
+
+class DatabasePrisma extends databaseInterface {
 
     constructor() {
-        this.prisma = new PrismaClient()
+        super();
+        this.prisma = new PrismaClient();
     }
 
     async initialize() {
-    
+        console.log("Prisma database initialized");
     }
 
     async getAll() {
-        await this.prisma.book.findMany();
+        return await this.prisma.book.findMany();
     }
 
-    async getById() {
+    async getById(id) {
         const book = await this.prisma.book.findUnique({
-            where: { bookName: ""},
+            where: { id: id },
         });
+
+        return book;
     }
 
-    async create() {
+    async create(bookData) {
+        console.log('Made it to create function')
         const book = await this.prisma.book.create({
             data: {
                 id: randomUUID(),
-                bookName: "",
-                lastChapterRead: "" | "",
-                novelupdatesUrl: "" | "",
+                bookName: "TestBook1",
+                lastChapterRead: 100,
+                novelUrl: "www.example.com",
             }
         });
+
+        return book;
     }
 
     async patch() {
         const updatedBook = await this.prisma.book.update({
-            where: { bookName: ""},
+            where: { id: id },
             data: { bookName: ""},
         });
     }
 
-    async delete() {
-        const deletedUser = await this.prisma.user.delete({
-            where: { bookName: ""},
+    async delete(id) {
+        const deletedBook = await this.prisma.book.delete({
+            where: { id: id },
         });
     }
 
@@ -51,11 +59,7 @@ class DatabasePrisma {
     }
 }
 
-export default DatabasePrisma();
-
-const db = new DatabasePrisma();
-await db.getAll();
-await db.disconnect();
+export default DatabasePrisma;
 
 /*
 TODO for API / Portfolio Improvements (Tomorrow):

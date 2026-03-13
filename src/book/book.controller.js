@@ -44,7 +44,6 @@ export class BookController {
     async createBookData(request, response) {
 
         const bookData = request.body;
-
         try {
             const createdBook = await this.BookServices.createBookProfile(bookData);
             return response.status(201).json(createdBook)

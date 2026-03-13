@@ -16,8 +16,11 @@ datasource db {
   // connection_limit = 10
 }
 
-model Dummy {
-  id    Int    @id @default(autoincrement())
-  name  String
-  value Int
+model Book {
+  id              String    @id
+  bookName        String
+  lastChapterRead Int?
+  novelUrl        String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
