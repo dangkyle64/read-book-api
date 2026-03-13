@@ -32,26 +32,45 @@ class DatabasePrisma extends databaseInterface {
         const book = await this.prisma.book.create({
             data: {
                 id: randomUUID(),
-                bookName: "TestBook1",
-                lastChapterRead: 100,
-                novelUrl: "www.example.com",
+                bookName: bookData.bookName,
+                lastChapterRead: bookData.lastChapterRead,
+                novelUrl: bookData.novelUrl,
             }
         });
 
         return book;
     }
 
-    async patch() {
+    async patch(id, newBookData) {
+
+        const dataToUpdate = {};
+
+        for (const key in newBookData) {
+            const value = newBookData[key]
+
+            if (value !== undefined) {
+                dataToUpdate[key] = value;
+            }
+        }
+
+        if (Object.keys(dataToUpdate).length === 0) {
+            return null;
+        };
+
         const updatedBook = await this.prisma.book.update({
             where: { id: id },
-            data: { bookName: ""},
+            data: dataToUpdate,
         });
+
+        return updatedBook;
     }
 
     async delete(id) {
-        const deletedBook = await this.prisma.book.delete({
+        await this.prisma.book.delete({
             where: { id: id },
         });
+
+        return {id: id}
     }
 
     async disconnect() {
@@ -62,21 +81,9 @@ class DatabasePrisma extends databaseInterface {
 export default DatabasePrisma;
 
 /*
-TODO for API / Portfolio Improvements (Tomorrow):
-
-Sketch a PostgresDatabase class that implements databaseInterface:
-
-Should support basic CRUD (getAll, getById, create, update, delete)
-
-Use pg or Prisma for simple queries
-
-Ensure it can drop in alongside the current JSON DB without changing services or controllers
-
-Update repository to accept any database implementation:
-
-Confirm JSON DB and Postgres DB both work with BookRepository
-
 Write a README snippet explaining:
+
+Benefits of Prisma or at least why being used 
 
 Repository depends on a database interface
 
@@ -87,5 +94,4 @@ Current implementation: JSON DB
 Planned future implementation: Postgres
 
 Optionally: write a simple integration test using Postgres (or a test DB) to prove it works
-
 */
