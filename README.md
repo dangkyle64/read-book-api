@@ -191,6 +191,17 @@ This separation helps isolate responsibilities between request handling, busines
 **6. User Interaction**
 - Add a frontend interface to provide a user-friendly way to interact with the API (currently tested via Postman/curl).
 
+**7. Real Database Integration**
+- Replace JSON file storage with proper database(PostgreSQL)
+- Refactor repository layer to alloe easy swapping of storage backend 
+- Enables better concurrency handling and prepares for scaling to more users
+
+**8. Authentication & Authorization**
+- Add JWT -based authentication for secure endpoints.
+- Protect sensitive r outes so only authorized users can modify data.
+- Support future frontend integration with login/signup flow.
+
+**9. Filter+Sort and Specific field selection, Upsert (update if exists, otherwise create): using Prisma ORM PUT DOES NOT EXIST IN PRISMA ORM**
 --- 
 For deeper look into my design thinking, implementation ideas, or potential improvements, see [project blog](https://dangkyle64.github.io/).
 
