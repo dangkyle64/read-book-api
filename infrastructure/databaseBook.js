@@ -119,7 +119,7 @@ class databaseBook extends databaseInterface {
         return parsedData.book[index];
     } 
 
-    async patch(id, newBookData) {
+    async patch(id, dataToUpdate) {
 
         let parsedData;
 
@@ -137,7 +137,7 @@ class databaseBook extends databaseInterface {
             throw new Error("Book profile does not exist.");
         }
             
-        Object.assign(foundBook, newBookData);
+        Object.assign(foundBook, dataToUpdate);
 
         this.data = parsedData;
 

@@ -15,8 +15,8 @@ export class BookRepository {
         return this.db.create(bookData)
     }
 
-    update(id, newBookData) {
-        return this.db.update(id, newBookData)
+    update(id, dataToUpdate) {
+        return this.db.update(id, dataToUpdate)
     }
 
     patch(id, newBookData) {

@@ -1,10 +1,10 @@
 export class BookService {
     constructor(BookRepository) {
-        this.BookRepository = BookRepository
+        this.BookRepository = BookRepository;
     }
 
     async getAllBookProfiles() {
-        return this.BookRepository.get()
+        return this.BookRepository.get();
     }
 
     async getBookProfile(id) {
@@ -12,18 +12,35 @@ export class BookService {
     }
 
     async createBookProfile(bookData) {
-        return await this.BookRepository.create(bookData)
+        return await this.BookRepository.create(bookData);
     }
 
     async updateBookProfile(id, newBookData) {
-        return await this.BookRepository.update(id, newBookData)
+        return await this.BookRepository.update(id, newBookData);
     }
 
     async patchBookProfile(id, newBookData) {
-        return await this.BookRepository.patch(id, newBookData)
+
+        const dataToUpdate = {};
+
+        // trying to get the non-null keys from the request.body to properly patch sent values
+        for (const key in newBookData) {
+            const value = newBookData[key];
+
+            if (value !== undefined) {
+                dataToUpdate[key] = value;
+            }
+        }
+
+        if (Object.keys(dataToUpdate).length === 0) {
+            return null;
+        }
+
+
+        return await this.BookRepository.patch(id, newBookData);
     }
 
     async deleteBookProfile(id) {
-        return await this.BookRepository.delete(id)
+        return await this.BookRepository.delete(id);
     }
 }

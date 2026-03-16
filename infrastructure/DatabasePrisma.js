@@ -28,7 +28,6 @@ class DatabasePrisma extends databaseInterface {
     }
 
     async create(bookData) {
-        console.log('Made it to create function')
         const book = await this.prisma.book.create({
             data: {
                 id: randomUUID(),
@@ -41,21 +40,7 @@ class DatabasePrisma extends databaseInterface {
         return book;
     }
 
-    async patch(id, newBookData) {
-
-        const dataToUpdate = {};
-
-        for (const key in newBookData) {
-            const value = newBookData[key]
-
-            if (value !== undefined) {
-                dataToUpdate[key] = value;
-            }
-        }
-
-        if (Object.keys(dataToUpdate).length === 0) {
-            return null;
-        };
+    async patch(id, dataToUpdate) {
 
         const updatedBook = await this.prisma.book.update({
             where: { id: id },
