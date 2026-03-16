@@ -9,12 +9,16 @@ const TEST_DB_PATH = path.resolve(
 	__dirname,
 	'../../infrastructure/testJsonDatabase.json'
 );
+
 let app;
 
 beforeEach(async () => {
+
+	process.env.DATABASE_TYPE = 'json';
+
 	fs.writeFileSync(TEST_DB_PATH, JSON.stringify({ book: [] }, null, 2));
 
-	app = await createApp({ dbPath: TEST_DB_PATH });
+	app = await createApp();
 
     await request(app)
         .post('/books')
