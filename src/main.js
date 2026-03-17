@@ -18,7 +18,8 @@ export function loadDatabase() {
         database = new DatabasePrisma();
     } else {
         console.log("Falling back to default json database");
-
+        
+        const __dirname = path.dirname(new URL(import.meta.url).pathname);
         const TEST_DB_PATH = path.resolve(
             __dirname,
             process.env.TEST_JSON_DATABASE_FILEPATH
