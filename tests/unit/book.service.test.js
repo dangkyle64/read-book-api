@@ -2,16 +2,32 @@ import { describe, it, expect } from "vitest";
 import { BookService } from "../../src/book/book.services.js";
 
 describe('book.services', () => {
-    it('getAllBookProfiles returns books from repository (dummy test until DB implementation)', async () => {
-        // mock since requires db to shift business logic to services
-        const mockBooks = [{ id: 1, title: 'Book1'}]
+    it('getAllBookProfiles returns books from repository', async () => {
+        const mockBooks = [{ id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", title: 'Book1'}]
         const mockRepository = {
             get: async () => mockBooks
-        }
+        };
 
-        const service = new BookService(mockRepository)
-        const result = await service.getAllBookProfiles()
+        const service = new BookService(mockRepository);
+        const result = await service.getAllBookProfiles();
 
-        expect(result).toEqual(mockBooks)
+        expect(result).toEqual(mockBooks);
+    })
+
+    it('getBookProfile returns book from repository', async () => {
+        const mockBook = [
+            { id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", title: 'Book1'}, 
+            { id: "dummy_id2", title: 'Book2'}
+        ]
+
+        const mockRepository = {
+            findById: async () => mockBook
+        };
+
+        const service = new BookService(mockRepository);
+        const id = "d15ecb32-8867-43ad-b867-066ee71b0cf6"
+        const result = await service.getBookProfile(id);
+
+        expect(result).toEqual(mockBook);
     })
 })

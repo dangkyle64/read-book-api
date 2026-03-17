@@ -8,7 +8,17 @@ export class BookService {
     }
 
     async getBookProfile(id) {
-        return await this.BookRepository.findById(id);
+
+        if (!id) {
+            throw new Error("Book ID must be provided");
+        }
+        
+        const book = await this.BookRepository.findById(id);
+        if (!book) {
+            throw new Error(`No book found with ID: ${id}`);
+        }
+
+        return book;
     }
 
     async createBookProfile(bookData) {
