@@ -22,7 +22,7 @@ export class BookService {
     }
 
     async createBookProfile(bookData) {
-        
+
         if (!bookData || !bookData.bookName) {
             throw new Error('Book must have a bookName');
         }
@@ -31,6 +31,11 @@ export class BookService {
     }
 
     async updateBookProfile(id, newBookData) {
+
+        if (!newBookData || !newBookData.bookName) {
+            throw new Error('Update failed, bookName is invalid.');
+        }
+
         return await this.BookRepository.update(id, newBookData);
     }
 

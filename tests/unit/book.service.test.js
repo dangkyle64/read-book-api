@@ -33,7 +33,7 @@ describe('book.services', () => {
 
     it('createBookProfile creates book instance', async () => {
         const mockBookData = { bookName: 'Book1' };
-        const mockCreatedBook = { ...mockBookData, id: 'new-id-string'};
+        const mockCreatedBook = { ...mockBookData, id: 'new-id-string' };
 
         const mockRepository = {
             create: async (bookData) => {
@@ -59,4 +59,33 @@ describe('book.services', () => {
         // expect rejected promise
         await expect(service.createBookProfile(mockInvalidBookData)).rejects.toThrow('Book must have a bookName');
     })
+
+    it('should update the book profile and return the updated book', async () => {
+        const mockNewBookData = { bookName: 'Updated Book' };
+        const mockUpdatedBook = { ...mockNewBookData, id: 'id-string' };
+
+        const mockRepository = {
+            update: async (newBookData) => {
+                return mockUpdatedBook;
+            }
+        };
+
+        const service = new BookService(mockRepository);
+        const result = await service.updateBookProfile('id-string', mockNewBookData);
+
+
+        expect(result).toEqual(mockUpdatedBook);
+    });
+
+    it('should throw an error if update fails', async () => {
+        const mockInvalidBookData = {};
+        const mockRepository = {
+            update: async (newBookData) => {}
+        };
+
+        const service = new BookService(mockRepository);
+
+        // Test that the error is thrown
+        await expect(service.updateBookProfile(mockInvalidBookData)).rejects.toThrow('Update failed, bookName is invalid.');
+    });
 })
