@@ -12,7 +12,7 @@ export class BookService {
         if (!id) {
             throw new Error("Book ID must be provided");
         }
-        
+
         const book = await this.BookRepository.findById(id);
         if (!book) {
             throw new Error(`No book found with ID: ${id}`);
@@ -22,6 +22,11 @@ export class BookService {
     }
 
     async createBookProfile(bookData) {
+        
+        if (!bookData || !bookData.bookName) {
+            throw new Error('Book must have a bookName');
+        }
+
         return await this.BookRepository.create(bookData);
     }
 

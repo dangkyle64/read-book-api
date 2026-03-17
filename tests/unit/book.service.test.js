@@ -3,7 +3,7 @@ import { BookService } from "../../src/book/book.services.js";
 
 describe('book.services', () => {
     it('getAllBookProfiles returns books from repository', async () => {
-        const mockBooks = [{ id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", title: 'Book1'}]
+        const mockBooks = [{ id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", bookName: 'Book1'}]
         const mockRepository = {
             get: async () => mockBooks
         };
@@ -16,8 +16,8 @@ describe('book.services', () => {
 
     it('getBookProfile returns book from repository', async () => {
         const mockBook = [
-            { id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", title: 'Book1'}, 
-            { id: "dummy_id2", title: 'Book2'}
+            { id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", bookName: 'Book1'}, 
+            { id: "dummy_id2", bookName: 'Book2'}
         ]
 
         const mockRepository = {
@@ -29,5 +29,34 @@ describe('book.services', () => {
         const result = await service.getBookProfile(id);
 
         expect(result).toEqual(mockBook);
+    })
+
+    it('createBookProfile creates book instance', async () => {
+        const mockBookData = { bookName: 'Book1' };
+        const mockCreatedBook = { ...mockBookData, id: 'new-id-string'};
+
+        const mockRepository = {
+            create: async (bookData) => {
+                return mockCreatedBook;
+            }
+        };
+
+        const service = new BookService(mockRepository);
+        const result = await service.createBookProfile(mockBookData);
+
+        expect(result).toEqual(mockCreatedBook);
+    })
+
+    it('createBookProfile return error on missing bookName', async () => {
+        const mockInvalidBookData = {};
+
+        const mockRepository = {
+            create: async () => {}
+        };
+
+        const service = new BookService(mockRepository);
+
+        // expect rejected promise
+        await expect(service.createBookProfile(mockInvalidBookData)).rejects.toThrow('Book must have a bookName');
     })
 })
