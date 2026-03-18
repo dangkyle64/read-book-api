@@ -61,6 +61,11 @@ export class BookService {
     }
 
     async deleteBookProfile(id) {
+
+        if (!id) {
+            throw new Error("Book ID must be provided");
+        }
+        
         return await this.BookRepository.delete(id);
     }
 }

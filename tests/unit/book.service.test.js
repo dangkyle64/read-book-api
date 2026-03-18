@@ -88,4 +88,20 @@ describe('book.services', () => {
         // Test that the error is thrown
         await expect(service.updateBookProfile(mockInvalidBookData)).rejects.toThrow('Update failed, bookName is invalid.');
     });
+
+    it('should delete the book profile and return an id object', async () => {
+        const mockDeletedBook = { id: 'deleted-book-id' };
+
+        const mockRepository = {
+            delete: async (id) => {
+                return mockDeletedBook;
+            }
+        }
+
+        const service = new BookService(mockRepository);
+        const mockId = 'to-delete-id';
+        const result = await service.deleteBookProfile(mockId);
+
+        expect(result).toEqual(mockDeletedBook);
+    })
 })
