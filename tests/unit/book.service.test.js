@@ -89,6 +89,74 @@ describe('book.services', () => {
         await expect(service.updateBookProfile(mockInvalidBookData)).rejects.toThrow('Update failed, bookName is invalid.');
     });
 
+    it('should return null if no valid fields are provided', async () => {
+        const mockRepository = {
+            patch: async (id, data) => {
+                return { id, ...data };
+            }
+        };
+
+        const service = new BookService(mockRepository);
+
+        const mockId = 'book-id';
+        const newBookData = {
+            title: undefined,
+            author: undefined
+        };
+
+        const result = await service.patchBookProfile(mockId, newBookData);
+
+        expect(result).toBeNull();
+    });
+
+    it('should patch only defined fields and return result', async () => {
+        const mockPatchedBook = { id: 'book-id', title: 'Updated Title' };
+
+        const mockRepository = {
+            patch: async (id, data) => {
+                return { id, ...data };
+            }
+        };
+
+        const service = new BookService(mockRepository);
+
+        const mockId = 'book-id';
+        const newBookData = {
+            title: 'Updated Title',
+            author: undefined
+        };
+
+        const result = await service.patchBookProfile(mockId, newBookData);
+
+        expect(result).toEqual(mockPatchedBook);
+    });
+
+    it('should patch multiple fields', async () => {
+        const mockPatchedBook = {
+            id: 'book-id',
+            title: 'New Title',
+            author: 'New Author'
+        };
+
+        const mockRepository = {
+            patch: async (id, data) => {
+                return { id, ...data };
+            }
+        };
+
+        const service = new BookService(mockRepository);
+
+        const mockId = 'book-id';
+        const newBookData = {
+            title: 'New Title',
+            author: 'New Author'
+        };
+
+        const result = await service.patchBookProfile(mockId, newBookData);
+
+        expect(result).toEqual(mockPatchedBook);
+    });
+
     it('should delete the book profile and return an id object', async () => {
         const mockDeletedBook = { id: 'deleted-book-id' };
 
@@ -103,5 +171,15 @@ describe('book.services', () => {
         const result = await service.deleteBookProfile(mockId);
 
         expect(result).toEqual(mockDeletedBook);
+    })
+
+    it('should throw error if profile id to delete does not exist', async () => {
+        const mockRepository = {
+            delete: async (id) => {}
+        }
+
+        const service = new BookService(mockRepository);
+
+        await expect(service.deleteBookProfile()).rejects.toThrow('Valid book ID must be provided');
     })
 })

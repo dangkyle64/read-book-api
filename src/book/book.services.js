@@ -57,13 +57,13 @@ export class BookService {
         }
 
 
-        return await this.BookRepository.patch(id, newBookData);
+        return await this.BookRepository.patch(id, dataToUpdate);
     }
 
     async deleteBookProfile(id) {
 
         if (!id) {
-            throw new Error("Book ID must be provided");
+            throw new Error("Valid book ID must be provided");
         }
         
         return await this.BookRepository.delete(id);
