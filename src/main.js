@@ -7,6 +7,7 @@ import { BookService } from './book/book.services.js';
 import { BookController } from './book/book.controller.js';
 import databaseBook from '../infrastructure/databaseBook.js';
 import DatabasePrisma from '../infrastructure/DatabasePrisma.js';
+import rateLimit from 'express-rate-limit';
 
 export function loadDatabase() {
     let database;
@@ -34,10 +35,17 @@ export function loadDatabase() {
 export async function createApp() {
     const app = express();
 
+    const limiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 100, // 100 requests per windowMs
+        message: 'Too many requests, please try later.',
+    });
+
+    app.use(limiter);
     app.use(express.static('public'));
     app.use(express.json());
 
-    let database = loadDatabase()
+    let database = loadDatabase();
 
     await database.initialize();
 

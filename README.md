@@ -132,7 +132,7 @@ curl -X DELETE http://localhost:3000/books/1b00401d-2317-483f-b8de-b5230c107c88
 ```
 
 ## Testing
-**Note:** Basic integration test for API get endpoint have been added. Unit tests are service function related and are currently mocked until DB integration.
+**Note:** Basic integration test for API get endpoint have been added. Unit tests are service function related and are currently mocked. Integration tests related to database is planned for future addition.
 
 Run the tests with:
 ```bash
@@ -167,6 +167,11 @@ This separation helps isolate responsibilities between request handling, busines
 - Status codes and messages are based on the error thrown from services/repositories.
 - This approach keeps things simple now, while making it easy to refactor into centralized middleware later.
 
+### Rate Limiting
+- express-rate-limit was chosen to handle rate limiting due to its simplicity and ease of integration with Express-based APIs.
+- The limiter provides basic per-IP request limiting which protects the API from abuse and excessive requests.
+- As API scales, more sophisticated per endpoint or user-based rate limiting may be introduced.
+
 ## Future Work
 
 **1. Testing Enhancements**
@@ -176,8 +181,8 @@ This separation helps isolate responsibilities between request handling, busines
 - Introduce test coverage reporting.
 
 **2. Rate limiting**
-- Implement basic per-IP limits to prevent excessive requests.
 - Refine limits per endpoint as the API scales.
+- Consider implementing more advanced rate-limiting like user authentication-based limits or different limits per role
 
 **3. Implement automated testing (CI)**
 - Set up continous integration using Github Actions.
