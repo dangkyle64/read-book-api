@@ -14,6 +14,57 @@ describe('book.services', () => {
         expect(result).toEqual(mockBooks);
     })
 
+    it('returns multiple books from repository', async () => {
+        const mockBooks = [
+            { id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", bookName: 'Book1' },
+            { id: "f29cd92c-9943-4c4f-8a43-0c76e885497a", bookName: 'Book2' }
+        ];
+        const mockRepository = {
+            get: async () => mockBooks
+        };
+
+        const service = new BookService(mockRepository);
+        const result = await service.getAllBookProfiles();
+
+        expect(result).toEqual(mockBooks);
+    });
+
+    it('getAllBookProfiles returns empty array when repository has no books', async () => {
+        const mockBooks = [];
+        const mockRepository = {
+            get: async () => mockBooks
+        };
+
+        const service = new BookService(mockRepository);
+        const result = await service.getAllBookProfiles();
+
+        expect(result).toEqual(mockBooks);
+    });
+
+    it('getAllBookProfiles throws an error if repository fails', async () => {
+        const mockRepository = {
+            get: async () => { throw new Error('Repository error'); }
+        };
+
+        const service = new BookService(mockRepository);
+        
+        await expect(service.getAllBookProfiles()).rejects.toThrow('Repository error');
+    });
+
+    it('getAllBookProfiles handles books with unexpected fields', async () => {
+        const mockBooks = [
+            { id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", bookName: 'Book1', unexpectedField: 'unexpected' }
+        ];
+        const mockRepository = {
+            get: async () => mockBooks
+        };
+
+        const service = new BookService(mockRepository);
+        const result = await service.getAllBookProfiles();
+
+        expect(result).toEqual(mockBooks);
+    });
+
     it('getBookProfile returns book from repository', async () => {
         const mockBook = [
             { id: "d15ecb32-8867-43ad-b867-066ee71b0cf6", bookName: 'Book1'}, 

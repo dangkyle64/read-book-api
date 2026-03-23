@@ -4,7 +4,12 @@ export class BookService {
     }
 
     async getAllBookProfiles() {
-        return this.BookRepository.get();
+        const books = await this.BookRepository.get();
+
+        if (!books) {
+            return [];
+        }
+        return books;
     }
 
     async getBookProfile(id) {
