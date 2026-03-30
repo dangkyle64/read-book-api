@@ -5,6 +5,8 @@ import "dotenv/config";
 import { BookRepository } from './book/book.repository.js';
 import { BookService } from './book/book.services.js';
 import { BookController } from './book/book.controller.js';
+import { LoginController } from './auth/login.controller.js';
+
 import databaseBook from '../infrastructure/databaseBook.js';
 import DatabasePrisma from '../infrastructure/DatabasePrisma.js';
 import rateLimit from 'express-rate-limit';
@@ -25,7 +27,7 @@ export function loadDatabase() {
         if (process.env.NODE_ENV === 'test') { 
             database = new databaseBook({ dbPath: TEST_DB_PATH });
         } else {
-            database = new databaseBook()
+            database = new databaseBook();
         }
     }
 
@@ -52,8 +54,10 @@ export async function createApp() {
     const bookRepository = new BookRepository(database);
     const bookServices = new BookService(bookRepository);
     const bookController = new BookController(bookServices);
-
     app.use('/books', bookController.router);
 
+    const loginController = new LoginController();
+    app.use('/login', loginController.router);
+    
     return app;
 }
