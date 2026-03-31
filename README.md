@@ -173,6 +173,11 @@ This separation helps isolate responsibilities between request handling, busines
 - The limiter provides basic per-IP request limiting which protects the API from abuse and excessive requests.
 - As the API scales, more sophisticated rate limiting (e.g., per endpoint or user-based limits) could be introduced, and this can be adapted for both PostgreSQL and JSON-based storage.
 
+### Authentication Approach
+- A basic token-based authentication system was implemented using in-memory storage instead of JWT.
+- This was done to understand how tokens are created, stored, and validated through middleware in Express.js.
+- This approach is simple and works well for development but is not suitable for production.
+
 ## Future Work
 
 **1. Testing Enhancements**
@@ -206,9 +211,11 @@ This separation helps isolate responsibilities between request handling, busines
 - Prepare for scalability by implementing concurrency handling (e.g., optimistic locking, transactions) in PostgreSQL, especially if the application expects multiple users modifying data at the same time.
 
 **8. Authentication & Authorization**
-- Add JWT -based authentication for secure endpoints.
+- Replace the current system with JWT-based authentication for better scalability and security.
 - Protect sensitive routes so only authorized users can modify data.
 - Support future frontend integration with login/signup flow.
+- Add a login and signup system that issues tokens upon successful authentication.
+- Return appropriate HTTP status codes (401 Unauthorized, 403 Forbidden) for authentication and authorization failures.
 
 **9. Enhance Prisma ORM Features**
 - Add filtering and sorting capabilities to improve the API’s ability to handle large datasets. Use Prisma's built-in query filters to support dynamic queries.

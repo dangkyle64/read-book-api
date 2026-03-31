@@ -51,13 +51,13 @@ export async function createApp() {
 
     await database.initialize();
 
+    const loginController = new LoginController();
+    app.use('/login', loginController.router);
+
     const bookRepository = new BookRepository(database);
     const bookServices = new BookService(bookRepository);
     const bookController = new BookController(bookServices);
     app.use('/books', bookController.router);
-
-    const loginController = new LoginController();
-    app.use('/login', loginController.router);
     
     return app;
 }

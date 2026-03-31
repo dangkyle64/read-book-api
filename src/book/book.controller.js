@@ -1,4 +1,5 @@
 import express from "express";
+import { authMiddleware } from "../auth/authMiddleware.js";
 
 export class BookController {
     constructor(BookServices) {
@@ -7,10 +8,10 @@ export class BookController {
 
         this.router.get("/", this.getAllBooks.bind(this))
         this.router.get("/:id", this.getBookById.bind(this))
-        this.router.post("/", this.createBookData.bind(this))
-        this.router.put("/:id", this.updateBookData.bind(this))
+        this.router.post("/", authMiddleware, this.createBookData.bind(this))
+        this.router.put("/:id", authMiddleware, this.updateBookData.bind(this))
         this.router.patch("/:id", this.patchBookData.bind(this))
-        this.router.delete("/:id", this.deleteBookById.bind(this))
+        this.router.delete("/:id", authMiddleware, this.deleteBookById.bind(this))
     }
 
     async getAllBooks(request, response) {
