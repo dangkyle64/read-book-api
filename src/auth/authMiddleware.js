@@ -16,6 +16,11 @@ export function authMiddleware(req, res, next) {
             return res.status(401).json({ message: "Invalid token" });
         }
 
+        if (session.expiresAt < Date.now()) {
+            delete tokens[token];
+            return res.status(401).json({ message: "Token expired" });
+        }
+
         req.user = session;
 
         next();

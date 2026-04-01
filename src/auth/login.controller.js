@@ -18,7 +18,10 @@ export class LoginController {
             if (username === "admin" && password === "password") {
                 const token = crypto.randomBytes(16).toString("hex");
                 
-                tokens[token] = { userId: 1 };
+                tokens[token] = { 
+                    userId: 1,
+                    expiresAt: Date.now() + 1000 * 60 * 15 // 15 minutes
+                };
                 console.log(tokens)
                 return response.status(200).json({ token });
             }
