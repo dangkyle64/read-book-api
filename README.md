@@ -215,7 +215,9 @@ This separation helps isolate responsibilities between request handling, busines
 - Protect sensitive routes so only authorized users can modify data.
 - Support future frontend integration with login/signup flow.
 - Add a login and signup system that issues tokens upon successful authentication.
-- Return appropriate HTTP status codes (401 Unauthorized, 403 Forbidden) for authentication and authorization failures.
+- Return appropriate HTTP status codes:
+- 401 Unauthorized for authentication failures (e.g., missing or invalid token)
+- 403 Forbidden for authorization failures (e.g., insufficient permissions)
 
 **9. Enhance Prisma ORM Features**
 - Add filtering and sorting capabilities to improve the API’s ability to handle large datasets. Use Prisma's built-in query filters to support dynamic queries.
