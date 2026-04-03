@@ -10,6 +10,7 @@ import { LoginController } from './auth/login.controller.js';
 import databaseBook from '../infrastructure/databaseBook.js';
 import DatabasePrisma from '../infrastructure/DatabasePrisma.js';
 import rateLimit from 'express-rate-limit';
+import { LogoutController } from './auth/logout.controller.js';
 
 export function loadDatabase() {
     let database;
@@ -53,6 +54,9 @@ export async function createApp() {
 
     const loginController = new LoginController();
     app.use('/login', loginController.router);
+
+    const logoutController = new LogoutController();
+    app.use('/logout', logoutController.router);
 
     const bookRepository = new BookRepository(database);
     const bookServices = new BookService(bookRepository);
