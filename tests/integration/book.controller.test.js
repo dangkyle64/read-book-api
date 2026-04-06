@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { createApp } from '../../src/main.js';
+import { tokens } from '../../src/auth/tokenStore.js';
 
 const TEST_DB_PATH = path.resolve(
 	__dirname,
@@ -11,6 +12,7 @@ const TEST_DB_PATH = path.resolve(
 );
 
 let app;
+let authHeader;
 
 beforeEach(async () => {
 
@@ -18,10 +20,23 @@ beforeEach(async () => {
 
 	fs.writeFileSync(TEST_DB_PATH, JSON.stringify({ book: [] }, null, 2));
 
+	for (const key in tokens) {
+		delete tokens[key];
+	}
+
+	// create test token
+	const token = "testToken";
+	tokens[token] = {
+		userId: 1,
+		expiresAt: Date.now() + 10000
+	};
+
+	authHeader = `Bearer ${token}`;
 	app = await createApp();
 
     await request(app)
         .post('/books')
+		.set('Authorization', authHeader)
         .send({ bookName: 'Seed Book' })
         .set('Content-Type', 'application/json');
 });
@@ -48,12 +63,16 @@ describe('GET /books/:id', () => {
     it('returns a single book', async () => {
         const postRes = await request(app)
             .post('/books')
+			.set('Authorization', authHeader)
             .send({ bookName: 'Single Book' })
             .set('Content-Type', 'application/json');
 
         const bookId = postRes.body.id;
 
-        const res = await request(app).get(`/books/${bookId}`);
+        const res = await request(app)
+			.get(`/books/${bookId}`)
+			.set('Authorization', authHeader)
+
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('id', bookId);
         expect(res.body).toHaveProperty('bookName', 'Single Book');
@@ -64,6 +83,7 @@ describe('PUT /books/:id', () => {
 	it('updates an existing book', async () => {
 		const postRes = await request(app)
 			.post('/books')
+			.set('Authorization', authHeader)
 			.send({ bookName: 'Book To Update' })
 			.set('Content-Type', 'application/json');
 
@@ -71,6 +91,7 @@ describe('PUT /books/:id', () => {
 
 		const res = await request(app)
 			.put(`/books/${bookId}`)
+			.set('Authorization', authHeader)
 			.send({ bookName: 'Updated Book Name' })
 			.set('Content-Type', 'application/json');
 
@@ -84,12 +105,16 @@ describe('DELETE /books/:id', () => {
 	it('deletes a book', async () => {
 		const postRes = await request(app)
 			.post('/books')
+			.set('Authorization', authHeader)
 			.send({ bookName: 'Book To Delete' })
 			.set('Content-Type', 'application/json');
 
 		const bookId = postRes.body.id;
 
-		const res = await request(app).delete(`/books/${bookId}`);
+		const res = await request(app)
+			.delete(`/books/${bookId}`)
+			.set('Authorization', authHeader)
+			
 		expect(res.statusCode).toBe(200);
 		expect(res.body).toHaveProperty('message');
 	});
